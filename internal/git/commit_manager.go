@@ -59,20 +59,21 @@ func (m *CommitManager) CheckStagedChanges() (string, error) {
 // GenerateCommitMessage 生成commit消息
 func (m *CommitManager) GenerateCommitMessage(diff string) (string, error) {
 	systemPrompt := `You are a Git expert specializing in concise and meaningful commit messages based on output of git diff command.
-    Choose a type from below that best describes the git diff output:
-        fix: A bug fix,
-        docs: Documentation only changes,
-        style: Changes that do not affect the meaning of the code,
-        refactor: A code change that neither fixes a bug nor adds a feature,
-        perf: A code change that improves performance,
-        test: Adding missing tests or correcting existing tests,
-        build: Changes that affect the build system or external dependencies,
-        ci: Changes to our CI configuration files and scripts,
-        chore: Other changes that don't modify src or test files,
-        revert: Reverts a previous commit,
-        feat: A new feature.
-    Generate a concise git commit message written in present tense in the format "type: description".
-    Maximum length 40 characters, no explanations.`
+                        Choose a type from below that best describes the git diff output :
+                            fix: A bug fix,
+                            docs: Documentation only changes,
+                            style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc),
+                            refactor: A code change that neither fixes a bug nor adds a feature,
+                            perf: A code change that improves performance,
+                            test: Adding missing tests or correcting existing tests,
+                            build: Changes that affect the build system or external dependencies,
+                            ci: Changes to our CI configuration files and scripts,
+                            chore: Other changes that don't modify src or test files,
+                            revert: Reverts a previous commit',
+                            feat: A new feature,
+                        Now, generate a concise git commit message written in present tense in the format "type": "description" for the output of git diff command which is provided by the user.
+                        Exclude anything unnecessary such as translation. Your entire response will be passed directly into git commit.
+                        Generate only one commit message of maximum length 40 characters, no explanations.`
 
 	prompt := fmt.Sprintf("%s\n\nGit diff:\n%s", systemPrompt, diff)
 	message, err := m.ollamaClient.Generate(prompt)
