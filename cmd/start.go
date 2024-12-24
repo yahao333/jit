@@ -14,7 +14,7 @@ var startCmd = &cobra.Command{
 	Short: "Start ollama server and ensure default model is available",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		banner := `
-╭────────────────── AutoCommitt ───────────────────╮
+╭──────────────────        Jit  ───────────────────╮
 │            ⚡ AI-Powered Git Commits ⚡          │
 │         Generated Locally, Commit Globally       │
 ╰──────────────────────────────────────────────────╯
